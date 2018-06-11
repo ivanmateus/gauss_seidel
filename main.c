@@ -3,8 +3,8 @@
 #include <time.h>
 
 #define MAXDATA 10
-#define ROWS 10
-#define COLS 10
+#define ROWS 1000000
+#define COLS 1000000
 
 typedef struct sparse_matrix{
 	int i;
