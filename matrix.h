@@ -27,7 +27,7 @@ M *destroy_matrix(M *Matrix);	//Erase the matrix
 M *sum_row(M *Matrix);	//Sum the rows
 M *sum_col(M *Matrix);	//Sum the columns
 M* set_value(M *Matrix, int NewValue, int Row, int Col);	//Set a new value in a certain position
-void wait();	//Awaits for the user to press ENTER
+void wait();	//Wait for the user to press ENTER
 void clean_stdin(void);		//Clean the stdin
 M *menu(M *Matrix);	//Show the menu
 

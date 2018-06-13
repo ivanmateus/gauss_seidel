@@ -69,6 +69,7 @@ M *create_matrix(M *Matrix, int NData){	//Create a matrix by adding NData elemen
 			Aux->Data = (rand() % MAXDATA);	//Generate a new value from 0 to MAXDATA
 		}
 		Matrix = insert_matrix(Matrix, Aux);	//Insert the new node into the matrix
+		free(Aux);
 		++k;
 	}
 	return Matrix;
@@ -90,16 +91,16 @@ M *print_matrix(M *Matrix){	//Show the matrix
 				++Counter;
 			}
 		}else{	//Else
-			while(Aux != NULL){	//Enquanto o auxiliar for diferente de nulo
-				while(Counter != Aux->j){	//Enquanto o contador for diferente da posicao do auxiliar, imprime os zeros
+			while(Aux != NULL){	//While the end of the list isnt reached
+				while(Counter != Aux->j){	//While Counter is different from the Aux's column position, print the 0's
 					printf("0 ");
 					++Counter;
 				}
 				++Counter;
-				printf("%d ", Aux->Data);	//Quando chegar na posicao do auxiliar, imprime o valor dele
-				Aux = Aux->NextCol;	//Passa pro proximo elemento nao nulo
-				if(Aux == NULL){	//Mas se o proximo "nao nulo" for nulo (Aux == NULL)
-					while(Counter < COLS){	//Imprime zero ate acabar a linha
+				printf("%d ", Aux->Data);	//When the Aux's column position is reached, print its element
+				Aux = Aux->NextCol;	//Then go to the next non-null element
+				if(Aux == NULL){	//But if the next "non-null" is null (Aux == NULL)
+					while(Counter < COLS){	//Then print 0 until the list is over
 						printf("0 ");
 						++Counter;
 					}
@@ -112,46 +113,47 @@ M *print_matrix(M *Matrix){	//Show the matrix
 	return Matrix;
 }
 
-M *destroy_matrix(M *Matrix){	//Apaga a matriz
+M *destroy_matrix(M *Matrix){	//Erase the matrix
 
 	int k = 0;
 
-	while(k < COLS){	//Seta todos os ponteiros das colunas para NULL
+	while(k < COLS){	//Set all column pointers to null
 		Matrix->Cols[k] = NULL;
 		++k;
 	}
 	k = 0;
-	while(k < ROWS){	//Apaga todas as linhas
+	while(k < ROWS){	//Erase all rows
 		Matrix->Rows[k] = destroy_row(Matrix->Rows[k]);
 		++k;
 	}
-	free(Matrix);	//Por fim libera a matriz
+	free(Matrix);	//Then free the matrix
 	return NULL;
 }
 
-M *sum_row(M *Matrix){	//Soma as linhas e exibe
+M *sum_row(M *Matrix){	//Sum each row's elements and show the result
 
 	int k = 0;
 	int Result = 0;
 	Cell *Aux = NULL;
 	Aux = init_cell(Aux);
 
-	while(k < ROWS){	//Enquanto as linhas nao acabarem
-		Result = 0;	//Zera o valor inicial
-		Aux = Matrix->Rows[k];	//Recebe o cabeca da linha 
-		while(Aux != NULL){	//Enquanto nao acabar a linha
-			Result = Result + Aux->Data;	//Soma o valor de cada elemento
-			Aux = Aux->NextCol;	//Pula pro proximo elemento
+	while(k < ROWS){	//While the rows arent over
+		Result = 0;	//Set the initial value to 0
+		Aux = Matrix->Rows[k];	//Receive the head of the row 
+		while(Aux != NULL){	//While the end of the row isnt reached
+			Result = Result + Aux->Data;	//Sum the element with the initial value
+			Aux = Aux->NextCol;	//Then go to the next node
 		}
-		printf("Row %d: %d\n", k + 1, Result);	//Imprime o valor da soma
+		printf("Row %d: %d\n", k + 1, Result);	//Print the result
 		++k;
 	}
 	return Matrix;
 }
 
-M *sum_col(M *Matrix){	//Soma as colunas e exibe
+M *sum_col(M *Matrix){	//Sum each column's elements and show the result
 
-	//Mesmo algoritmo da soma das linhas, mas com os ponteiros das colunas
+	//The same algorithm used to the rows, 
+	//but now with columns
 	int k = 0;
 	int Result = 0;
 	Cell *Aux = NULL;
@@ -170,32 +172,32 @@ M *sum_col(M *Matrix){	//Soma as colunas e exibe
 	return Matrix;
 }
 
-M* set_value(M *Matrix, int NewValue, int Row, int Col){	//Seta um valor em uma posicao definida
+M* set_value(M *Matrix, int NewValue, int Row, int Col){	//Set a value in a certain position (not occupied yet)
 
 	Cell *New = NULL;
-	New = init_cell(New);	//Inicia um novo no
-	//Recebe os dados do novo no
+	New = init_cell(New);	//Initialize a new node
+	//Receive all the necessary data
 	New->i = Row;	
 	New->j = Col;
 	New->Data = NewValue;
 
-	Matrix = insert_matrix(Matrix, New);	//Insere na matriz
+	Matrix = insert_matrix(Matrix, New);	//Then put it into the matrix
 	return Matrix;
 }
 
-void wait(){	//Espera pela entrada do usuario
+void wait(){	//Wait for the user to press ENTER
 	printf("Press ENTER to continue.\n");
 	getchar();
 }
 
-void clean_stdin(void){		//Função que limpa stdin
+void clean_stdin(void){		//Clean the stdin buffer
 	int c;
 	while(c != '\n' && c != EOF){
 		c = getchar();
 	}
 }
 
-M *menu(M *Matrix){	//Função que exibe as opções do menu e as executam
+M *menu(M *Matrix){	//Show the menu
 
 	int Elements = 0;
 	int Row = 0;
@@ -217,7 +219,7 @@ M *menu(M *Matrix){	//Função que exibe as opções do menu e as executam
 		printf("3. Consult the data in a position (i,j) in the matrix;\n");
 		printf("4. Consult the sum of each row;\n");
 		printf("5. Consult the sum of each column;\n");
-		printf("6. Set a value in a position (i,j);\n");
+		printf("6. Set a value in an unoccupied position (i,j);\n");
 		printf("7. Show matrix;\n");
 		printf("0. Exit the program.\n");
 		printf("Type in the option: ");
@@ -227,18 +229,19 @@ M *menu(M *Matrix){	//Função que exibe as opções do menu e as executam
 
 		switch(Option) {
 			case 1:
-				printf("P.S.: If your matrix has been created already, this option will only add new numbers to it.\n");
+				printf("P.S.: If your matrix has been created already, this option will only add new numbers to it. ");
+				printf("If you want to create a new matrix, erase the current one with option #2, then choose the #1 again.\n\n");
 				printf("How many non-null elements do you want in the matrix? A: ");
 				scanf("%d", &Elements);
-				Matrix = create_matrix(Matrix, Elements);	//Cria a matriz ou adiciona numeros novos
+				Matrix = create_matrix(Matrix, Elements);
 				printf("\nNew matrix: \n");
-				Matrix = print_matrix(Matrix);	//Imprime a matriz
+				Matrix = print_matrix(Matrix);
 				printf("\n");
 				clean_stdin();
 				wait();
 				break;
 			case 2:
-				Matrix = destroy_matrix(Matrix);	//Destroi a matriz
+				Matrix = destroy_matrix(Matrix);
 				printf("\nDone!\n");
 				wait();
 				break;
@@ -248,26 +251,26 @@ M *menu(M *Matrix){	//Função que exibe as opções do menu e as executam
 				scanf("%d", &Row);
 				printf("\nColumn: ");
 				scanf("%d", &Col);
-				printf("\nThe element in this position is: %d\n", search(Matrix, Row - 1, Col - 1));	//Exibe o elemento da busca
+				printf("\nThe element in this position is: %d\n", search(Matrix, Row - 1, Col - 1));
 				printf("\nMatrix: \n");
-				Matrix = print_matrix(Matrix);	//Exibe a matriz
+				Matrix = print_matrix(Matrix);
 				printf("\n");
 				clean_stdin();
 				wait();
 				break;
 			case 4:
 				printf("The sum of each row is:\n");
-				Matrix = sum_row(Matrix);	//Soma e exibe as linhas
+				Matrix = sum_row(Matrix);
 				printf("\nMatrix: \n");
-				Matrix = print_matrix(Matrix);	//Exibe a matriz
+				Matrix = print_matrix(Matrix);
 				printf("\n");
 				wait();
 				break;
 			case 5:
 				printf("The sum of each column is:\n");	
-				Matrix = sum_col(Matrix);	//Soma e exibe as colunas
+				Matrix = sum_col(Matrix);
 				printf("\nMatrix: \n");
-				Matrix = print_matrix(Matrix);	//Imprime a matriz
+				Matrix = print_matrix(Matrix);
 				printf("\n");
 				wait();
 				break;
@@ -279,21 +282,21 @@ M *menu(M *Matrix){	//Função que exibe as opções do menu e as executam
 				scanf("%d", &Row);
 				printf("\nColumn: ");
 				scanf("%d", &Col);
-				Matrix = set_value(Matrix, Value, Row - 1, Col - 1);	//Seta um valor em uma dada posicao
+				Matrix = set_value(Matrix, Value, Row - 1, Col - 1);
 				printf("\n\nMatrix: \n");
-				Matrix = print_matrix(Matrix);	//Imprime a matriz
+				Matrix = print_matrix(Matrix);
 				printf("\n");
 				clean_stdin();
 				wait();
 				break;
 			case 7:
 				printf("Matrix: \n");
-				Matrix = print_matrix(Matrix);	//Imprime a matriz
+				Matrix = print_matrix(Matrix);
 				printf("\n");
 				wait();
 				break;
 			case 0:
-				Matrix = destroy_matrix(Matrix);	//Destroi a matriz e finalmente sai do programa retornando NULL
+				Matrix = destroy_matrix(Matrix);
 				return Matrix;
 			default:
 				printf("Invalid option.\n");
