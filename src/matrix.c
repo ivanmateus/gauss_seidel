@@ -15,7 +15,7 @@ M *init_matrix(M *Matrix){	//Initialize the matrix
 		return Matrix;
 	}
 
-	//Initialize the row array of pointers 
+	//Initialize the row array of pointers
 	while(k < ROWS){
 		Matrix->Rows[k] = NULL;
 		++k;
@@ -140,7 +140,7 @@ M *sum_row(M *Matrix){	//Sum each row's elements and show the result
 
 	while(k < ROWS){	//While the rows arent over
 		Result = 0;	//Set the initial value to 0
-		Aux = Matrix->Rows[k];	//Receive the head of the row 
+		Aux = Matrix->Rows[k];	//Receive the head of the row
 		while(Aux != NULL){	//While the end of the row isnt reached
 			Result = Result + Aux->Data;	//Sum the element with the initial value
 			Aux = Aux->NextCol;	//Then go to the next node
@@ -153,7 +153,7 @@ M *sum_row(M *Matrix){	//Sum each row's elements and show the result
 
 M *sum_col(M *Matrix){	//Sum each column's elements and show the result
 
-	//The same algorithm used to the rows, 
+	//The same algorithm used to the rows,
 	//but now with columns
 	int k = 0;
 	int Result = 0;
@@ -178,7 +178,7 @@ M* set_value(M *Matrix, int NewValue, int Row, int Col){	//Set a value in a cert
 	Cell *New = NULL;
 	New = init_cell(New);	//Initialize a new node
 	//Receive all the necessary data
-	New->i = Row;	
+	New->i = Row;
 	New->j = Col;
 	New->Data = NewValue;
 
@@ -243,6 +243,7 @@ M *menu(M *Matrix){	//Show the menu
 				break;
 			case 2:
 				Matrix = destroy_matrix(Matrix);
+				Matrix = init_matrix(Matrix);
 				printf("\nDone!\n");
 				wait();
 				break;
@@ -268,7 +269,7 @@ M *menu(M *Matrix){	//Show the menu
 				wait();
 				break;
 			case 5:
-				printf("The sum of each column is:\n");	
+				printf("The sum of each column is:\n");
 				Matrix = sum_col(Matrix);
 				printf("\nMatrix: \n");
 				Matrix = print_matrix(Matrix);
