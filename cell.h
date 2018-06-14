@@ -11,7 +11,7 @@
 typedef struct sparse_matrix{	//Structure of a node
 	int i;
 	int j;
-	int Data;
+	float Data;
 	struct sparse_matrix *NextRow;
 	struct sparse_matrix *NextCol;
 } Cell;

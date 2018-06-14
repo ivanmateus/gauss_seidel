@@ -9,8 +9,8 @@
 
 //-------Constants' definition section-------
 #define MAXDATA 10
-#define ROWS 100
-#define COLS 100
+#define ROWS 1000000
+#define COLS 1000000
 
 //----Defining the struct of a matrix----
 typedef struct matrix{	//Structure of a matrix
@@ -30,5 +30,11 @@ M* set_value(M *Matrix, int NewValue, int Row, int Col);	//Set a new value in a 
 void wait();	//Wait for the user to press ENTER
 void clean_stdin(void);		//Clean the stdin
 M *menu(M *Matrix);	//Show the menu
+M *getAmatrix(M *A);
+M *getBmatrix(M *B);
+M *initial_array();
+M *gauss_seidel(M *A, M *B, float AllowedErr);
+M *print_seidel(M *Matrix);	//Show the matrix
+int scientific_notation_order(float Error);
 
 #endif

@@ -1,6 +1,8 @@
+//-------Including libraries-------
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #include "matrix.h"
 #include "cell.h"
 
@@ -69,7 +71,6 @@ M *create_matrix(M *Matrix, int NData){	//Create a matrix by adding NData elemen
 			Aux->Data = (rand() % MAXDATA);	//Generate a new value from 0 to MAXDATA
 		}
 		Matrix = insert_matrix(Matrix, Aux);	//Insert the new node into the matrix
-		free(Aux);
 		++k;
 	}
 	return Matrix;
@@ -97,7 +98,7 @@ M *print_matrix(M *Matrix){	//Show the matrix
 					++Counter;
 				}
 				++Counter;
-				printf("%d ", Aux->Data);	//When the Aux's column position is reached, print its element
+				printf("%d ", (int)Aux->Data);	//When the Aux's column position is reached, print its element
 				Aux = Aux->NextCol;	//Then go to the next non-null element
 				if(Aux == NULL){	//But if the next "non-null" is null (Aux == NULL)
 					while(Counter < COLS){	//Then print 0 until the list is over
