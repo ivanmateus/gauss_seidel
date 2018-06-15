@@ -9,8 +9,8 @@
 
 //-------Constants' definition section-------
 #define MAXDATA 10
-#define ROWS 1000000
-#define COLS 1000000
+#define ROWS 100
+#define COLS 100
 
 //----Defining the struct of a matrix----
 typedef struct matrix{	//Structure of a matrix

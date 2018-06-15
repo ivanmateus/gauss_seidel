@@ -235,7 +235,7 @@ M *menu(M *Matrix){	//Show the menu
 				printf("How many non-null elements do you want in the matrix? A: ");
 				scanf("%d", &Elements);
 				Matrix = create_matrix(Matrix, Elements);
-				printf("\nNew matrix: \n");
+				printf("\nMatrix: \n");
 				Matrix = print_matrix(Matrix);
 				printf("\n");
 				clean_stdin();
