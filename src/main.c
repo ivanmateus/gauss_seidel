@@ -22,13 +22,18 @@ int main(int argc, char *argv[]){
 		printf("Enter the tolerance: ");
 		scanf(" %lf", &Tolerance);
 
+		printf("\n");
 		A = getAmatrix(A);
 		printf("\n");
 		B = getBmatrix(B);
 		X = gauss_seidel(A, B, Tolerance);
 
-		printf("X\n");
+		printf("\nX\n");
 		X = print_seidel(X);
+
+		A = destroy_matrix(A);
+		B = destroy_matrix(B);
+		X = destroy_matrix(X);
 	}
 	return 0;
 }
