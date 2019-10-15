@@ -94,7 +94,7 @@ void insert_row(list *head, node *new){	//Insert a new node in a row
 	}
 }
 
-void insert_col(list *head, node *new){	//Insert a new node in a column
+void insert_col(list *head, node *new){		//Insert a new node in a column
 	//Same algorithm used for the rows, except
 	//for the pointers (here they are the ones appropriate to columns)
 	
@@ -139,7 +139,7 @@ matrix *initial_array(int n){	//Generate a column matrix with initial conditions
 	return initArray;
 }
 
-long double test_matrix_A_values(int i, int j){
+long double test_matrix_A_values(int i, int j){	//Return the matrix of coefficients’ values
 	if(i == j){
 		return 5;
 	}
@@ -149,7 +149,7 @@ long double test_matrix_A_values(int i, int j){
 	return 0;
 }
 
-matrix *create_test_matrix_A(int n){
+matrix *create_test_matrix_A(int n){	//Create test matrix of coefficients A
 	node *new = NULL;
 	matrix *A = init_matrix(n, n);
 
@@ -165,7 +165,7 @@ matrix *create_test_matrix_A(int n){
 	return A;
 }
 
-long double test_matrix_b_values(matrix *A, int i, int test){
+long double test_matrix_b_values(matrix *A, int i, int test){	//Return test matrix b values
 	if(test == 1){
 		long double bi = 0; 
 		node *aux = A->rows[i];
@@ -178,7 +178,7 @@ long double test_matrix_b_values(matrix *A, int i, int test){
 	return 1.0 / (i + 1);
 }
 
-matrix *create_test_matrix_b(matrix *A, int n, int test){
+matrix *create_test_matrix_b(matrix *A, int n, int test){	//Create test matrix b
 	node *new = NULL;
 	matrix *b = init_matrix(n, 1);
 
@@ -189,7 +189,7 @@ matrix *create_test_matrix_b(matrix *A, int n, int test){
 	return b;
 }
 
-matrix *subtract_arrays(matrix *x1, matrix *x2, int n){
+matrix *subtract_arrays(matrix *x1, matrix *x2, int n){	//Subtract two arrays
 	matrix *x3 = init_matrix(n, 1);
 	node *aux1 = NULL;
 	node *aux2 = NULL;
@@ -204,14 +204,14 @@ matrix *subtract_arrays(matrix *x1, matrix *x2, int n){
 	return x3;
 }
 
-long double abs_value(long double n){
+long double abs_value(long double n){	//Return abs value of long double variable
 	if(n < 0){
 		return n * (-1.0);
 	}
 	return n;
 }
 
-long double inf_norm(matrix *x, int n){
+long double inf_norm(matrix *x, int n){	//Calculate infinity norm of an array
 	long double max = abs_value((x->rows[0])->data);
 	for(int i = 1; i < n; ++i){
 		if(max < abs_value((x->rows[i])->data)){
@@ -221,13 +221,13 @@ long double inf_norm(matrix *x, int n){
 	return max;
 }
 
-void copy_array(matrix *x1, matrix *x2, int n){
+void copy_array(matrix *x1, matrix *x2, int n){	//Copy an array into other
 	for(int i = 0; i < n; ++i){
 		(x1->rows[i])->data = (x2->rows[i])->data;
 	}
 }
 
-matrix *gauss_seidel(matrix *A, matrix *b, long double epsilon, int itmax, int n){
+matrix *gauss_seidel(matrix *A, matrix *b, long double epsilon, int itmax, int n){	//Execute the Gauss-Seidel method
 	int k = 0;
 	long double bi = 0;
 	long double aij = 0;
@@ -274,10 +274,7 @@ matrix *gauss_seidel(matrix *A, matrix *b, long double epsilon, int itmax, int n
 	}
 	return x_kplus;
 }
-
-//Erase the matrix
-void destroy_matrix(matrix *A, int n){
-	//Se a lista estiver vazia, retorna NULL
+void destroy_matrix(matrix *A, int n){	//Erase the matrix from memory
 	if(A == NULL){
 		return;
 	}
@@ -287,10 +284,10 @@ void destroy_matrix(matrix *A, int n){
 		A->cols[i] = NULL;
 		free(A->cols[i]);
 		aux = A->rows[i];
-		while(aux != NULL){	//Enquanto nao chegar ao fim
-			A->rows[i] = aux->nextCol;	//Guarda o endereco do proximo
-			free(aux);	//Libera o atual
-			aux = A->rows[i];	//E segue para o proximo
+		while(aux != NULL){
+			A->rows[i] = aux->nextCol;
+			free(aux);
+			aux = A->rows[i];
 		}
 	}
 }
@@ -366,14 +363,3 @@ int main(int argc, char *argv[]){
 	}
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
