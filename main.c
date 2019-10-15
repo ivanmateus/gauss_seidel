@@ -275,47 +275,95 @@ matrix *gauss_seidel(matrix *A, matrix *b, long double epsilon, int itmax, int n
 	return x_kplus;
 }
 
+//Erase the matrix
+void destroy_matrix(matrix *A, int n){
+	//Se a lista estiver vazia, retorna NULL
+	if(A == NULL){
+		return;
+	}
+	
+	node *aux = NULL;
+	for (int i = 0; i < n; ++i){
+		A->cols[i] = NULL;
+		free(A->cols[i]);
+		aux = A->rows[i];
+		while(aux != NULL){	//Enquanto nao chegar ao fim
+			A->rows[i] = aux->nextCol;	//Guarda o endereco do proximo
+			free(aux);	//Libera o atual
+			aux = A->rows[i];	//E segue para o proximo
+		}
+	}
+}
+
 int main(int argc, char *argv[]){
 
-	/*
-	matrix *A = create_test_matrix_A(N1A);
-	matrix *b = create_test_matrix_b(A, N1A, 1);
-	matrix *x = gauss_seidel(A, b, EPSILON, 5*N1A, N1A);
-	
-	printf("TEST 1A\n");
-	node *aux = x->cols[0];
-	while(aux != NULL){
-		printf("i: %d // j: %d // ", aux->i, aux->j);
-		printf("data: %.30Lf\n\n", aux->data);
-		aux = aux->nextRow;
+	int option = -1;
+	int matrixDim = 0;
+	matrix *A = NULL;
+	matrix *b = NULL;
+	matrix *x = NULL;
+	node *aux = NULL;
+
+	while(option != 0){
+		printf("Type in the test you'd like to execute:\n");
+		printf("1. n = 50\n");
+		printf("2. n = 100\n");
+		printf("3. n = 500\n");
+		printf("0. Exit the program\n");
+		printf("Option: ");
+		scanf("%d", &option);
+
+		switch (option){
+			case 1:
+				A = create_test_matrix_A(N1A);
+				b = create_test_matrix_b(A, N1A, 1);
+				x = gauss_seidel(A, b, EPSILON, 5*N1A, N1A);
+				
+				printf("\nTEST 1a\n");
+				aux = x->cols[0];
+				while(aux != NULL){
+					printf("i: %d | j: %d | ", aux->i + 1, aux->j + 1);
+					printf("data: %.10Lf\n", aux->data);
+					aux = aux->nextRow;
+				}
+				matrixDim = N1A;
+				break;
+			case 2:
+				A = create_test_matrix_A(N1B);
+				b = create_test_matrix_b(A, N1B, 1);
+				x = gauss_seidel(A, b, EPSILON, 5*N1B, N1B);
+				
+				printf("\nTEST 1b\n");
+				aux = x->cols[0];
+				while(aux != NULL){
+					printf("i: %d | j: %d | ", aux->i + 1, aux->j + 1);
+					printf("data: %.10Lf\n", aux->data);
+					aux = aux->nextRow;
+				}
+				matrixDim = N1B;
+				break;
+			case 3:
+				A = create_test_matrix_A(N2);
+				b = create_test_matrix_b(A, N2, 2);
+				x = gauss_seidel(A, b, EPSILON, 5*N2, N2);
+				
+				printf("\nTEST 2\n");
+				aux = x->cols[0];
+				while(aux != NULL){
+					printf("i: %d | j: %d | ", aux->i + 1, aux->j + 1);
+					printf("data: %.10Lf\n", aux->data);
+					aux = aux->nextRow;
+				}
+				matrixDim = N2;
+				break;
+			default:
+				destroy_matrix(A, matrixDim);
+				destroy_matrix(b, matrixDim);
+				destroy_matrix(x, matrixDim);
+				break;
+		}
+		printf("\n");
 	}
-	*/
-	/*
-	matrix *A = create_test_matrix_A(N1B);
-	matrix *b = create_test_matrix_b(A, N1B, 1);
-	matrix *x = gauss_seidel(A, b, EPSILON, 5*N1B, N1B);
-	
-	printf("TEST 1B\n");
-	node *aux = x->cols[0];
-	while(aux != NULL){
-		printf("i: %d // j: %d // ", aux->i, aux->j);
-		printf("data: %.30Lf\n\n", aux->data);
-		aux = aux->nextRow;
-	}
-	*/
-	/*
-	matrix *A = create_test_matrix_A(N2);
-	matrix *b = create_test_matrix_b(A, N2, 2);
-	matrix *x = gauss_seidel(A, b, EPSILON, 5*N2, N2);
-	
-	printf("TEST 2\n");
-	node *aux = x->cols[0];
-	while(aux != NULL){
-		printf("i: %d // j: %d // ", aux->i, aux->j);
-		printf("data: %.30Lf\n\n", aux->data);
-		aux = aux->nextRow;
-	}
-	*/
 	return 0;
 }
 
